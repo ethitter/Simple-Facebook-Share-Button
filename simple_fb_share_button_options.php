@@ -32,21 +32,21 @@ add_action( 'admin_menu', 'SFBSB_menu' );
  * @return html help text
  */
 function SFBSB_help() {
-	$help .= '<h5>Simple Facebook Share Button Help</h5><div class="metabox-prefs">';
+	$help = '<h5>Simple Facebook Share Button Help</h5><div class="metabox-prefs">';
 	$help .= '<a href="' . admin_url( 'options-general.php?page=simple_fb_share_button_options&sub=help' ) . '">Plugin Help</a><br />';
 	$help .= '<a href="http://www.ethitter.com/plugins/simple-fb-share-button/" target="_blank">Plugin Homepage</a><br />';
 	$help .= '<a href="http://wordpress.org/extend/plugins/simple-facebook-share-button/" target="_blank">Simple Facebook Share Button at WordPress Plugins repository</a>';
 	$help .= '</div>';
-	
+
 	return $help;
 }
 
 /*
  * Render options page
- * @uses get_option, WP_PLUGIN_URL, admin_url, checked, selected, settings_fields
+ * @uses wp_parse_args, get_option, WP_PLUGIN_URL, admin_url, checked, selected, settings_fields
  */
 function SFBSB_options() {
-	$options = get_option( 'SFBSB' );
+	$options = wp_parse_args( get_option( 'SFBSB' ), SFBSB_default_options() );
 	$imgbase = WP_PLUGIN_URL . '/' . basename( dirname( __FILE__ ) ) . '/';
 ?>
 	<div style="float:right; padding-left:5px; padding-bottom:5px;" align="right">
@@ -61,23 +61,24 @@ function SFBSB_options() {
 	<div class="wrap">
 		<h2>Simple Facebook&reg; Share Button by <a href="http://www.ethitter.com/plugins/" target="_blank" style="text-decoration:none;">Erick Hitter</a>
 	</h2>
-	
+
 	<?php if( isset( $_GET[ 'sub' ] ) && $_GET[ 'sub' ] == 'help' ): ?>
 		<h4><a href="<?php echo admin_url( 'options-general.php?page=simple_fb_share_button_options&sub=options' ); ?>">Return to plugin options</a></h4>
 	<?php else: ?>
 		<h3><a href="<?php echo admin_url( 'options-general.php?page=simple_fb_share_button_options&sub=help' ); ?>">Plugin Help</a></h3>
 	<?php endif;
-	
-		switch( $_GET[ 'sub' ] ) {
-		
+		$sub = isset( $_GET[ 'sub' ] ) ? $_GET[ 'sub' ] : '';
+
+		switch( $sub ) {
+
 		default:
 		case 'options':
 			?>
 			<form method="post" action="options.php">
-				<div id="poststuff" class="metabox-holder has-right-sidebar"> 
+				<div id="poststuff" class="metabox-holder has-right-sidebar">
 					<div class="postbox">
 						<h3>Display Settings</h3>
-	
+
 						<table class="form-table" cellspacing="2" cellpadding="5" width="100%">
 							<tr>
 								<th width="30%" valign="top">Display button automatically based on options below?</th>
@@ -108,7 +109,7 @@ function SFBSB_options() {
 							</tr>
 						</table>
 					</div>
-					
+
 					<div class="postbox">
 						<h3>Button Style & Placement</h3>
 						<table class="form-table" cellspacing="2" cellpadding="5" width="100%">
@@ -144,7 +145,7 @@ function SFBSB_options() {
 												</td>
 												<td width="33%" valign="top" align="center">
 												</td>
-											</tr>								
+											</tr>
 										</table>
 										<p>
 											<em>Note that depending on your theme, the large button featuring share counts may display in an unexpected manner due to Facebook's rendering of that button. Until Facebook resolves this issue, you may need to enable a <strong>Theme Compatibility Mode</strong> under <strong>Advanced Settings</strong> or specify padding (particularly if displaying the button below your posts) to prevent the button from overlapping other elements of your theme.</em>
@@ -217,7 +218,7 @@ function SFBSB_options() {
 								</tr>
 							</table>
 						</div>
-			
+
 						<div class="postbox"><h3>Advanced Settings</h3>
 							<table class="form-table" cellspacing="2" cellpadding="5" width="100%">
 								<tr>
@@ -279,7 +280,7 @@ function SFBSB_options() {
 								</tr>
 							</table>
 						</div>
-						
+
 						<div class="postbox">
 							<h3>Uninstall</h3>
 							<table class="form-table" cellspacing="2" cellpadding="5" width="100%">
@@ -293,19 +294,19 @@ function SFBSB_options() {
 							</table>
 						</div>
 					</div>
-				
+
 				<p class="submit">
 					<input type="submit" class="button-primary" value="Save Changes" />
 				</p>
-				
+
 				<?php settings_fields( 'SFBSB' ); ?>
 			</form>
 		<?php
 		break;
-		
+
 		case "help":
 		?>
-			<div id="poststuff" class="metabox-holder has-right-sidebar"> 
+			<div id="poststuff" class="metabox-holder has-right-sidebar">
 				<div class="postbox"><h3>General Questions</h3>
 					<div style="margin:4px;">
 						<strong>Why was the <code>SFBSB_do()</code> function removed?</strong>
@@ -321,7 +322,7 @@ function SFBSB_options() {
 							<p style="margin-left:10px;"><strong>Mode 3</strong> combines the functions of Modes 1 and 2.</p>
 					</div>
 				</div>
-				
+
 				<div class="postbox">
 					<h3>Using the function SFBSB_direct();</h3>
 					<div style="margin:4px;">
@@ -330,7 +331,7 @@ function SFBSB_options() {
 							<br /><br />
 						<strong>What options does the function accept?</strong>
 							<p>The <code>SFBSB_direct()</code> function has only one option, and it's not required. If the <em>x</em> shown above is omitted (along with the quotation marks surrounding it), the default button will be generated. To generate one of the other button options, replace <em>x</em> with the button type named below. To display custom text alognside the Facebook&reg; icon, replace <em>x</em> with your desired text.</p>
-				
+
 						<div align="center">
 							<table style="text-align:center;" width="40%" cellpadding="2" cellspacing="2">
 								<tr>
@@ -349,7 +350,7 @@ function SFBSB_options() {
 						</div>
 					</div>
 				</div>
-	
+
 				<div class="postbox">
 					<h3>Using the shortcode [SFBSB]</h3>
 					<div style="margin:4px;">
@@ -381,12 +382,12 @@ function SFBSB_options() {
 function SFBSB_validation() {
 	if( wp_verify_nonce( $_POST[ '_wpnonce' ], 'SFBSB-options' ) ) {
 		$options = array();
-		
+
 		foreach( $_POST[ 'options' ] as $option => $value ) {
 			$value = sanitize_text_field( $value );
 			if( strlen( $value ) > 0 ) $options[ $option ] = $value;
 		}
-	
+
 		return $options;
 	}
 	else wp_die( 'Something has gone awry...' );

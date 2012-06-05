@@ -3,8 +3,8 @@ Contributors: ethitter
 Donate link: http://www.ethitter.com/plugins/simple-facebook-share-button/
 Tags: share, facebook, social media, button
 Requires at least: 2.7
-Tested up to: 3.2.1
-Stable tag: 2.0.3
+Tested up to: 3.4
+Stable tag: 2.0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -57,6 +57,9 @@ Mode 3 combines the functions of Modes 1 and 2.
 
 == Changelog ==
 
+= 2.0.4 =
+* Add defaults function to resolve undefined indexes notices.
+
 = 2.0.3 =
 * Fix bug in custom styling option.
 
@@ -90,6 +93,9 @@ Mode 3 combines the functions of Modes 1 and 2.
 * Removed redundant button style.
 
 == Upgrade Notice ==
+
+= 2.0.4 =
+Resolves PHP notices, but adds no new features. Recommended for all users.
 
 = 2.0.3 =
 Fix bug in custom styling option.
