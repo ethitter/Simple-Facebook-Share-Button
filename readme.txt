@@ -5,6 +5,8 @@ Tags: share, facebook, social media, button
 Requires at least: 2.7
 Tested up to: 3.2.1
 Stable tag: 2.0.3
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Painlessly add a Facebook Share button to your posts and/or pages. Supports all button styles, manual or automatic inclusion, and shortcode.
 

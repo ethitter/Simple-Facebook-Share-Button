@@ -6,6 +6,20 @@ Description: Painlessly add a Facebook® Share button to your posts and/or pages
 Author: Erick Hitter
 Version: 2.0.3
 Author URI: http://www.ethitter.com/
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 require( 'simple_fb_share_button_options.php' );
@@ -35,7 +49,7 @@ function SFBSB_setup() {
 				'SFBSB_compatibility' => 'compatibility',
 				'SFBSB_uninstall' => 'uninstall'
 			);
-			
+
 			foreach( $keys as $old_key => $new_key ) {
 				if( $old_option = get_option( $old_key ) ) $options[ $new_key ] = $old_option;
 				delete_option( $old_key );
@@ -49,15 +63,15 @@ function SFBSB_setup() {
 				'content' => 'post'
 			);
 		}
-		
+
 		update_option( 'SFBSB', $options );
 	}
-	
+
 	//Add filters if set to automatic display
 	if( $options[ 'display' ] == 1 ) add_filter( 'the_content', 'SFBSB_auto' );
 	if( $options[ 'display' ] == 1 && $options[ 'content-excerpt' ] == 1 ) add_filter( 'the_excerpt', 'SFBSB_auto' );
 
-	//Register scripts 
+	//Register scripts
 	wp_enqueue_script( 'FB-Loader', 'http://static.ak.fbcdn.net/connect.php/js/FB.Loader', array(), 322597, true );
 	wp_enqueue_script( 'FB-Share', 'http://static.ak.fbcdn.net/connect.php/js/FB.Share', array( 'FB-Loader' ), 322597, true );
 }
@@ -111,12 +125,12 @@ function SFBSB_shortcode( $atts ) {
 		'style' => 'float:left;',
 		'custom_text' => ''
 	), $atts ) );
-	
+
 	//Button type
 	if( $button == 'custom' ) $button = 'icon_link';
-	
+
 	$style_do = ' style="' . $style . '"';
-	
+
 	if( $align !== false ) $align_do = ' align="' . $align . '"';
 
 	return '<div' . $align_do . $style_do . '><a name="fb_share" type="' . $button . '" share_url="' . get_permalink() . '">' . $custom_text . '</a></div>';
@@ -131,7 +145,7 @@ add_shortcode( 'SFBSB', 'SFBSB_shortcode' );
  */
 function SFBSB_auto( $content ) {
 	global $post;
-	
+
 	$options = get_option( 'SFBSB' );
 
 	//Button
@@ -142,9 +156,9 @@ function SFBSB_auto( $content ) {
 
 	//Padding
 	$default_padding = '5px';
-	
+
 	$_padding = array();
-	
+
 	if( ( $options[ 'placement' ] == 'tl' || $options[ 'placement' ] == 'tr' ) && !isset( $options[ 'tpad' ] ) ) $options[ 'tpad' ] = '0';
 	if( ( $options[ 'placement' ] == 'bl' || $options[ 'placement' ] == 'br' ) && !isset( $options[ 'bpad' ] ) ) $options[ 'bpad' ] = '0';
 	if( ( $options[ 'placement' ] == 'tl' || $options[ 'placement' ] == 'bl' ) && !isset( $options[ 'lpad' ] ) ) $options[ 'lpad' ] = '0';
@@ -156,11 +170,11 @@ function SFBSB_auto( $content ) {
 	$_padding[ 3 ] = strlen( $options[ 'lpad' ] ) > 0 ? $options[ 'lpad' ] . 'px' : $default_padding;
 
 	$padding = trim( implode( ' ', $_padding ) );
-	
+
 	//Placement
 	if( $options[ 'placement' ] == 'tl' || $options[ 'placement' ] == 'bl' ) $align=' align="left"';
 	elseif( $options[ 'placement' ] == 'tr' || $options[ 'placement' ] == 'br' ) $align=' align="right"';
-	
+
 	//Compatibility mode
 	if( $options[ 'compatibility' ] == 1 ) $float = 'none';
 	elseif( $options[ 'compatibility' ] == 2 ) {
@@ -175,19 +189,19 @@ function SFBSB_auto( $content ) {
 		if( $options[ 'placement' ] == 'tl' || $options[ 'placement' ] ==' bl' ) $float = 'left';
 		elseif( $options[ 'placement' ] == 'tr' || $options[ 'placement' ] == 'br' ) $float = 'right';
 	}
-		
+
 	//Style
 	if( !empty( $options[ 'style' ] ) ) $style_do = ' style="' . $options[ 'style' ] . '"';
 	else $style_do = ' style="float: ' . $float . '; padding: ' . $padding . ';"';
-	
-	
+
+
 	//Build button
 	$fb = '<div' . $align . $style_do . '><a name="fb_share" type="' . $button_type . '" share_url="' . get_permalink() . '">' . $options[ 'custom_text' ] . '</a></div>';
 
 	//Add button to $content
 	if ( ( $post->post_type == $options[ 'content' ] || $options[ 'content' ] == 'both' ) && ( $options[ 'placement' ] == 'tl' || $options[ 'placement' ] == 'tr' ) ) $content = $fb . $content;
 	elseif( ( $post->post_type == $options[ 'content' ] || $options[ 'content' ] == 'both' ) && ( $options[ 'placement' ] == 'bl' || $options[ 'placement' ] == 'br' ) ) $content = $content . $fb;
-	
+
 	return $content;
 }
 
