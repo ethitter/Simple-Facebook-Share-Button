@@ -4,7 +4,7 @@ Plugin Name: Simple Facebook Share Button
 Plugin URI: http://www.ethitter.com/plugins/simple-facebook-share-button/
 Description: Painlessly add a Facebook® Share button to your posts and/or pages. Supports all five button types, including custom button text, and placement above or below content. Includes compatibility modes to ensure seamless theme integration. Button can also be added using a shortcode or by inserting a function in your template.
 Author: Erick Hitter
-Version: 2.0.3
+Version: 2.0.4
 Author URI: http://www.ethitter.com/
 
 This program is free software; you can redistribute it and/or modify
@@ -22,11 +22,36 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+
+/**
+ * Default options
+ *
+ * @since 2.0.4
+ * @return array
+ */
+function SFBSB_default_options() {
+	return array(
+		'display' => 0,
+		'content' => 'post',
+		'content-excerpt' => 0,
+		'button' => 'button',
+		'custom_text' => '',
+		'placement' => 'tr',
+		'compatibility' => 0,
+		'tpad' => 0,
+		'bpad' => 0,
+		'lpad' => 0,
+		'rpad' => 0,
+		'style' => '',
+		'uninstall' => 0
+	);
+}
+
 require( 'simple_fb_share_button_options.php' );
 
 /*
  * Set up options, convert old options, add filters if automatic display is enabled, and enqueue scripts
- * @uses get_option, update_option, add_filter, wp_enqueue_script
+ * @uses get_option, wp_parse_args, update_option, add_filter, wp_enqueue_script
  * @return null
  */
 function SFBSB_setup() {
@@ -64,27 +89,45 @@ function SFBSB_setup() {
 			);
 		}
 
+		$options = wp_parse_args( $options, SFBSB_default_options() );
+
 		update_option( 'SFBSB', $options );
 	}
 
-	//Add filters if set to automatic display
-	if( $options[ 'display' ] == 1 ) add_filter( 'the_content', 'SFBSB_auto' );
-	if( $options[ 'display' ] == 1 && $options[ 'content-excerpt' ] == 1 ) add_filter( 'the_excerpt', 'SFBSB_auto' );
+	$options = wp_parse_args( $options, SFBSB_default_options() );
 
-	//Register scripts
-	wp_enqueue_script( 'FB-Loader', 'http://static.ak.fbcdn.net/connect.php/js/FB.Loader', array(), 322597, true );
-	wp_enqueue_script( 'FB-Share', 'http://static.ak.fbcdn.net/connect.php/js/FB.Share', array( 'FB-Loader' ), 322597, true );
+	//Add filters if set to automatic display
+	if( $options[ 'display' ] == 1 )
+		add_filter( 'the_content', 'SFBSB_auto' );
+
+	if( $options[ 'display' ] == 1 && $options[ 'content-excerpt' ] == 1 )
+		add_filter( 'the_excerpt', 'SFBSB_auto' );
 }
 add_action( 'plugins_loaded', 'SFBSB_setup' );
 
+/**
+ * Enqueue scripts
+ *
+ * @uses wp_enqueue_script
+ * @wp_enqueue_scripts
+ * @return null
+ */
+function SFBSB_scripts() {
+	wp_enqueue_script( 'FB-Loader', 'http://static.ak.fbcdn.net/connect.php/js/FB.Loader', array(), 322597, true );
+	wp_enqueue_script( 'FB-Share', 'http://static.ak.fbcdn.net/connect.php/js/FB.Share', array( 'FB-Loader' ), 322597, true );
+}
+add_action( 'wp_enqueue_scripts', 'SFBSB_scripts' );
+
 /*
  * Remove plugin options on deactivation if requested to do so.
- * @uses get_option, delete_option
+ * @uses wp_parse_args, get_option, delete_option
  * @action register_deactivation_hook
  */
 function SFBSB_deactivate() {
-	$options = get_option( 'SFBSB' );
-	if ($options[ 'uninstall' ] == 1 ) delete_option('SFBSB');
+	$options = wp_parse_args( get_option( 'SFBSB' ), SFBSB_default_options() );
+
+	if ( $options[ 'uninstall' ] == 1 )
+		delete_option('SFBSB');
 }
 register_deactivation_hook( __FILE__, 'SFBSB_deactivate' );
 
@@ -140,13 +183,13 @@ add_shortcode( 'SFBSB', 'SFBSB_shortcode' );
 /*
  * Add button to content via the_content and the_excerpt filters
  * @param string $content post content
- * @uses $post, get_option
+ * @uses $post, wp_parse_args, get_option
  * @return string post content
  */
 function SFBSB_auto( $content ) {
 	global $post;
 
-	$options = get_option( 'SFBSB' );
+	$options = wp_parse_args( get_option( 'SFBSB' ), SFBSB_default_options() );
 
 	//Button
 	if( $options[ 'button' ] == 'custom' ) {
