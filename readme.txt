@@ -3,59 +3,35 @@ Contributors: ethitter
 Donate link: http://www.ethitter.com/plugins/simple-facebook-share-button/
 Tags: share, facebook, social media, button
 Requires at least: 2.7
-Tested up to: 3.4
-Stable tag: 2.0.4
+Tested up to: 3.4.1
+Stable tag: 2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Painlessly add a Facebook Share button to your posts and/or pages. Supports all button styles, manual or automatic inclusion, and shortcode.
+On July 17, 2012, Facebook dropped support for the Share button, rendering this plugin useless. It is no longer supported and should be deleted.
 
 == Description ==
 
-Painlessly add a Facebook Share button to your posts and pages.
-
-Features include:
-
-* Supports all five button types, including custom button text;
-* Supports placing button above or below content;
-* Button can be shown on either posts (including excerpts), pages, or both;
-* Includes compatibility modes for seamless theme integration;
-* Allows user to override default padding options (defaults provided in admin interface);
-* Button can be added via shortcode;
-* Function can be added manually.
+On July 17, 2012, Facebook completely dropped support for the Share button, rendering this plugin useless. It is no longer supported and should be deleted.
 
 == Installation ==
 
-1. Unzip simple-fb-share-button.zip and upload entire simple-fb-share-button folder to wp-content/plugins/.
-2. Activate plugin through the Wordpress Plugins menu.
-3. Set display, button, and placement options from Settings > Simple FB Share Button.
-4. To manually include the Share button, see the Help page in the plugin's Settings page.
+Please don't. It doesn't do anything.
 
 == Frequently Asked Questions ==
 
-= After upgrading to version 2.0, the button no longer appears on my site. How can I fix this? =
+= What happened to this plugin? =
 
-The most common reason for this problem lies with your theme's footer.php file. If `wp_footer()` does not appear somewhere in footer.php, my plugin cannot add the scripts needed to render the Share button. If your theme is missing `wp_footer()`, add the following code just before the `</body>` tag: `<?php wp_footer(); ?>`.
+Soon after Facebook launched its Like button in April 2010, it announced that the Share button was no longer the preferred way of sharing content to Facebook (they deprecated the service). The button was, until July 17, 2012, still supported though.
 
-= How Do I Manually Add Share Buttons? =
+As of July 17, 2012, the button no longer functions, so I removed all of its functionality and will no longer support it.
 
-After activating the plugin, go to Settings > Simple FB Share Button and select "Plugin Help" at the top of the screen.
-
-= Why Does My Blog's Tagline Appear Instead of a Summary of My Content? =
-
-The Facebook Sharer uses the `<meta name="description" content="description">` tag to gather information about the content you are sharing. Some templates set the description tag to be your tagline. If you are using a plugin that creates a meta description tag from your content, such as HeadSpace or All In One SEO, you should edit your template's header.php file to remove the `<meta name="description" content="<?php bloginfo('description'); ?>">` tag.
-
-= What are the Theme Compatibility Modes? =
-
-In certain themes, the button may overlap other theme elements, such as comment buttons or other plugins. The plugin includes three compatibility modes to help resolve these problems with minimal effort user effort. Know that in some cases, these modes will not resolve button placement problems. In that case, a custom CSS style may be needed.
-
-Mode 1 disables the CSS float property (a setting that allows the button to, as the name implies, float adjacent to your blog's content) and relies on the alignment of the button wrapper to place the button.
-
-Mode 2 prevents other elements from floating adjacent to the button (using the CSS clear property).
-
-Mode 3 combines the functions of Modes 1 and 2.
+If you're looking for a Like button alternative, <a href="http://wordpress.org/extend/plugins/search.php?q=facebook+like">search for &quot;Facebook Like&quot;</a> in the plugins repository.
 
 == Changelog ==
+
+= 2.1 =
+* Replacing plugin functionality with stubs after Facebook stopped supporting the Share API.
 
 = 2.0.4 =
 * Add defaults function to resolve undefined indexes notices.
@@ -93,6 +69,9 @@ Mode 3 combines the functions of Modes 1 and 2.
 * Removed redundant button style.
 
 == Upgrade Notice ==
+
+= 2.1 =
+Please don't upgrade. Instead, you should deactivate and delete this plugin as Facebook no longer supports the Share button, so this plugin doesn't work.
 
 = 2.0.4 =
 Resolves PHP notices, but adds no new features. Recommended for all users.
